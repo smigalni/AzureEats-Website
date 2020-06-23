@@ -20,6 +20,7 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: 10.15.3
+        
     - name: Install dependencies in client app
       working-directory: Source/Tailwind.Traders.Web/ClientApp
       run: npm install
@@ -28,13 +29,17 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 2.1.400
+        
     - name: Build with dotnet
       working-directory: Source/Tailwind.Traders.Web
       run: dotnet build --configuration Release
+      
     - name: dotnet publish
       working-directory: Source/Tailwind.Traders.Web
       run: |
         dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/Source/Tailwind.Traders.Web
+      env:
+        CI: false
 
     - uses: azure/appservice-settings@v1
       with:
